@@ -12,6 +12,17 @@ public class Character : MonoBehaviour
     Animator animator;
     [SerializeField]
     AudioClip stepSound;
+    public AudioSource source;
+
+    public bool bruitPas = true;
+
+    public AudioClip grassClip;
+    public AudioClip dirtClip;
+    public AudioClip grassdirtClip;
+    public AudioClip cliffClip;
+    public AudioClip sandClip;
+    public AudioClip carrelageClip;
+    public CheckTerrainTexture check;
 
     // Start is called before the first frame update
     void Awake()
@@ -101,14 +112,37 @@ public class Character : MonoBehaviour
     // Fonction appelée lors de chaque pas grâce à un animation event intégré dans le cycle de marche du personnage
     public void StepSound()
     {
-        // À remplacer lorsque vous intégrerez les sons de pas
-        if (stepSound != null)
+        if (bruitPas)
         {
-            GetComponent<AudioSource>().PlayOneShot(stepSound);
+            check.GetTerrainTexture();
+            if (check.textureValues[0] > 0)
+            {
+                source.PlayOneShot(grassClip, check.textureValues[0] / 7);
+            }
+            if (check.textureValues[1] > 0)
+            {
+                source.PlayOneShot(dirtClip, check.textureValues[1] / 7);
+            }
+            if (check.textureValues[2] > 0)
+            {
+                source.PlayOneShot(grassdirtClip, check.textureValues[2] / 7);
+            }
+            if (check.textureValues[3] > 0)
+            {
+                source.PlayOneShot(cliffClip, check.textureValues[3] / 7);
+            }
+            if (check.textureValues[4] > 0)
+            {
+                source.PlayOneShot(sandClip, check.textureValues[4] / 7);
+            }
+            if (check.textureValues[5] > 0)
+            {
+                source.PlayOneShot(carrelageClip, check.textureValues[5] / 56);
+            }
         }
         else
         {
-            Debug.Log("Il faut intégrer l'audioclip dans le script Character !!!");
+            source.PlayOneShot(carrelageClip, 0.01715686f);
         }
 
 
